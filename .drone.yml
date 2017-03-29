@@ -26,3 +26,11 @@ pipeline:
     commands:
       - docker login -u jumalcapgemini -p $PASS
       - docker push jumalcapgemini/example-webserver
+
+  deploy:
+    image: docker
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+      - docker pull jumalcapgemini/example-webserver
+      - docker stack deploy -c ./docker-compose.yml example-webserver
