@@ -38,5 +38,5 @@ pipeline:
     commands:
       - docker pull jumalcapgemini/example-webserver:$DRONE_COMMIT_SHA
       - docker tag jumalcapgemini/example-webserver:$DRONE_COMMIT_SHA
-               jumalcapgemini/example-webserver:production
+               jumalcapgemini/example-webserver:latest
       - docker stack deploy -c ./docker-compose.yml example-webserver
