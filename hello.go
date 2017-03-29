@@ -14,5 +14,5 @@ func main() {
 }
 
 func hello(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Hello From Golang -- modified"))
+	w.Write([]byte("Hello From Jumal"))
 }
