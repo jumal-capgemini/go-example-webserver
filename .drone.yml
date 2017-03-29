@@ -4,7 +4,7 @@ pipeline:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
-      - docker build -t jumalcapgemini/example-webserver .
+      - docker build -t jumalcapgemini/example-webserver:$DRONE_COMMIT_SHA .
 
   test:
     image: docker
@@ -13,7 +13,7 @@ pipeline:
     commands:
       - docker kill test
       - docker rm test
-      - docker create --name test jumalcapgemini/example-webserver
+      - docker create --name test jumalcapgemini/example-webserver:$DRONE_COMMIT_SHA
       - docker cp ./test.sh test:/test.sh
       - docker start test /test.sh
     
@@ -25,12 +25,14 @@ pipeline:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
       - docker login -u jumalcapgemini -p $PASS
-      - docker push jumalcapgemini/example-webserver
+      - docker push jumalcapgemini/example-webserver:$DRONE_COMMIT_SHA
 
   deploy:
     image: docker
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
-      - docker pull jumalcapgemini/example-webserver
+      - docker pull jumalcapgemini/example-webserver:$DRONE_COMMIT_SHA
+      - docker tag jumalcapgemini/example-webserver:$DRONE_COMMIT_SHA
+               jumalcapgemini/example-webserver:latest
       - docker stack deploy -c ./docker-compose.yml example-webserver
