@@ -11,4 +11,4 @@ pipeline:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
-      - docker run -v test.sh:/test.sh jumalcapgemini/example-webserver sudo sh /test.sh
+      - docker run -v $PWD/test.sh:/test.sh jumalcapgemini/example-webserver sudo sh /test.sh
